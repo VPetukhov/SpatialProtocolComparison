@@ -109,3 +109,22 @@ def load_spatial_transcriptomics(data_path: str, min_cells: int = 5, min_genes: 
     sc.pp.filter_genes(adata, min_cells=min_cells)
 
     return adata
+
+
+# STARmap
+
+def read_starmap(data_path: str):
+    expression_df = np.load(data_path + "/cell_barcode_count.npy")
+    gene_names = pd.read_csv(data_path + "/genes.csv", header=None)[0].values
+    return sc.AnnData(DataFrame(expression_df, columns=gene_names))
+
+
+# Seq-FISH+
+
+def read_seq_fish_df(path, cell_id):
+    with open(path) as f:
+        lines = [np.array(l[:-1].split(",")) for l in f]
+    
+    df = DataFrame(dict(gene=lines[0], x=lines[1].astype(float), y=lines[2].astype(float)))
+    df["cell"] = cell_id
+    return df

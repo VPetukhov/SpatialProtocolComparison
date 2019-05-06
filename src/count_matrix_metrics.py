@@ -54,4 +54,5 @@ def get_scalar_metrics(expression: np.ndarray):
     expression = np.array(expression)
     return DataFrame({"Sparsity Level": [(expression == 0).mean()],
                       "#Cells": [expression.shape[0]],
-                      "#Genes": [expression.shape[1]]})
+                      "#Genes": [expression.shape[1]],
+                      "#Transcripts": [expression.sum()]})
