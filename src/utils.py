@@ -9,11 +9,21 @@ import scanpy as sc
 import matplotlib.pyplot as plt
 
 
-def process_scanpy(adata: sc.AnnData, n_neighbors: int = 10, n_pcs: int = 50, metric: str = 'cosine', cl_resolution: float = 0.5):
-    sc.tl.pca(adata, svd_solver='arpack')
+def process_scanpy(adata: sc.AnnData, n_neighbors: int = 10, n_pcs: int = 50, n_od_genes:int = 0,
+                   metric: str = 'cosine', cl_resolution: float = 0.5, do_log: bool = False):
+    adata = adata.copy()
+    sc.pp.normalize_per_cell(adata, counts_per_cell_after=1e4)
+    if do_log:
+        sc.pp.log1p(adata)
+
+    use_od_genes = (n_od_genes > 0 and do_log)
+    if use_od_genes:
+        sc.pp.highly_variable_genes(adata, n_top_genes=n_od_genes)
+    sc.tl.pca(adata, svd_solver='arpack', use_highly_variable=use_od_genes)
     sc.pp.neighbors(adata, n_neighbors=n_neighbors, n_pcs=n_pcs, metric=metric)
     sc.tl.umap(adata)
     sc.tl.louvain(adata, resolution=cl_resolution)
+    return adata
 
 
 def plot_clustering(adata: sc.AnnData, clustering_type: str = "louvain", ax=None, **kwargs):
@@ -27,10 +37,13 @@ def plot_clustering(adata: sc.AnnData, clustering_type: str = "louvain", ax=None
     ax.legend()
 
 
-def plot_clusters_spatial(adata: sc.AnnData, clustering_type: str = "louvain", figsize=(15, 6), s=0.5, **kwargs):
+def plot_clusters_spatial(adata: sc.AnnData, clustering_type: str = "louvain", figsize=(15, 6), s=0.5, titles=None, **kwargs):
     fig, axes = plt.subplots(ncols=2, figsize=figsize)
     sc.pl.umap(adata, color=clustering_type, legend_loc='on data', ax=axes[0], show=False)
     plot_clustering(adata, s=s, ax=axes[1], **kwargs)
+    if titles is not None:
+        for ax, t in zip(axes, titles):
+            ax.set_title(t)
 
 
 # Slide-seq
