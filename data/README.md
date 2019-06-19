@@ -1,8 +1,6 @@
 ## Download data
 
-
 ### SpatialTranscriptomics Olfactory Bulb
-
 
 [Link](http://www.spatialtranscriptomicsresearch.org/datasets/doi-10-1126science-aaf2403/) to the dataset.
 
@@ -43,19 +41,14 @@ fid = fopen('Genes.csv', 'w'); fprintf(fid, '%s\n', GeneNames{1:end}); fclose(fi
 wget http://linnarssonlab.org/osmFISH/osmFISH_SScortex_mouse_all_cells.loom
 ```
 
-### SeqFISH+
+### seqFISH+
 
-
-[Data repository](https://github.com/CaiGroup/seqFISH-PLUS)
-
+NIT/3T3 data was published in [Zenodo](http://doi.org/10.5281/zenodo.2669683) repository. For more details see [seqFISH-PLUS GitHub](https://github.com/CaiGroup/seqFISH-PLUS).
+Data from experiment 1 was downloaded and converted to csv format. Csv file can be obtained from pklab server:
 
 ```bash
-wget https://github.com/CaiGroup/seqFISH-PLUS/raw/master/sourcedata.zip
-unzip sourcedata.zip
-mv sourcedata seq_fish && rm sourcedata.zip
-unzip seq_fish/RNA_locations_cell_cortex.zip -d seq_fish/rna_locations
+wget http://pklab.med.harvard.edu/viktor/data/spatial/seq_fish_nih3t3.csv
 ```
-
 
 ### STARmap
 
@@ -67,3 +60,11 @@ mkdir star_map
 unzip visual_160_20171120_BF4_light.zip -d visual_160_20171120_BF4_light
 unzip visual_1020_20180505_BY3_1kgenes.zip -d visual_1020_20180505_BY3_1kgenes
 ```
+
+### Allen smFISH
+
+Data was shared in SpaceTx consortium, but not published yet.
+
+### MERFISH
+
+Subset of data from [Molecular, spatial, and functional single-cell profiling of the hypothalamic preoptic region](https://doi.org/10.1126/science.aau5324) was kindly provided by Jeffrey Moffitt
