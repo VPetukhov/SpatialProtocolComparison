@@ -13,7 +13,7 @@ jupyter:
     name: conda-env-anaconda3-py
 ---
 
-```python init_cell=true run_control={"read_only": false, "frozen": false}
+```python run_control={"read_only": false, "frozen": false} init_cell=true
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -37,6 +37,14 @@ adata = adata[(adata.obs["x"].values > 500) & (adata.obs["x"].values < 5000) & (
 
 ```python run_control={"read_only": false, "frozen": false}
 plot_expression_metrics(adata.X, xlim1=1000, xlim2=1000, xlim3=500);
+```
+
+Worth to note that absolute majority of transcripts are located in the right tail and not shown on the plots above:
+
+```python
+n_transcripts = np.array(adata.X.sum(axis=1))
+print("#transcripts on the plot: {}".format(int(n_transcripts[n_transcripts < 1000].sum())))
+print("Total #transcripts: {}".format(int(n_transcripts.sum())))
 ```
 
 ```python run_control={"read_only": false, "frozen": false}
@@ -63,7 +71,7 @@ plt.xlabel("Mitochondrial fraction");
 %time adata_processed = process_scanpy(adata, cl_resolution=0.3, n_neighbors=10)
 ```
 
-```python
+```python run_control={"read_only": false, "frozen": false}
 plot_clusters_spatial(adata_processed, titles=["Expression UMAP", "Spatial position"])
 ```
 
@@ -155,7 +163,7 @@ get_expression_value_fracs(adata_st.X)
 get_scalar_metrics(adata_st.X)
 ```
 
-```python
+```python run_control={"read_only": false, "frozen": false}
 adata_st_processed = process_scanpy(adata_st, n_neighbors=10, do_log=True, n_od_genes=1000)
 plot_clusters_spatial(adata_st_processed, s=40, titles=["Expression UMAP", "Spatial position"])
 ```
